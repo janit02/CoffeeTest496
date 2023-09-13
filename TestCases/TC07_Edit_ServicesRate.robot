@@ -64,3 +64,4 @@ TC07
 Begin Webpage
     Open Browser            http://localhost:8081/CoffeeProject/openHome      chrome    executable_path=D:/chromedriver.exe
     Maximize Browser Window
+    
