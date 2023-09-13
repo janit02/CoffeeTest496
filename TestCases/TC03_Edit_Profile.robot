@@ -7,8 +7,8 @@ Library        ScreenCapLibrary
 *** Test Cases ***
 TC03
     
-    # Start Video Recording    name=C:/Users/Admin/Desktop/Testdata/TC03_EditProfile  fps=None    size_percentage=1   embed=True  embed_width=100px   monitor=1
-    Open Excel Document    C:/Users/Admin/Desktop/Testdata/TC03_EditProfile.xlsx    doc_id=TestData
+    # Start Video Recording    name=D:/TestCoffee496/Testdata/TC03_EditProfile  fps=None    size_percentage=1   embed=True  embed_width=100px   monitor=1
+    Open Excel Document    D:/TestCoffee496/Testdata/TC03_EditProfile.xlsx    doc_id=TestData
     ${excel}    Get Sheet    TestData
     FOR    ${i}    IN RANGE    2    ${excel.max_row+1}
         ${status}    Set Variable If    "${excel.cell(${i},2).value}" == "None"    ${EMPTY}    ${excel.cell(${i},2).value}
@@ -59,7 +59,7 @@ TC03
         END
     END
     Close All Browsers
-    Save Excel Document    C:/Users/Admin/Desktop/ResultsData/TD03_Editprofile_Result.xlsx
+    Save Excel Document    D:/TestCoffee496/ResultsData/TD03_Editprofile_Result.xlsx
     # Stop Video Recording
 
 *** Keywords ***

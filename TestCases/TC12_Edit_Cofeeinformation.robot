@@ -8,8 +8,8 @@ Library        DateTime
 *** Test Cases ***
 TC12
     #อัดวีดีโอ ค่อยเปิดตอนจะอัดจริงๆ
-    # Start Video Recording    name=C:/Users/Admin/Desktop/Testdata/EditCoffeeInformaion  fps=None    size_percentage=1   embed=True  embed_width=100px   monitor=1
-    Open Excel Document    C:/Users/Admin/Desktop/Testdata/EditCoffeeInformaion.xlsx    doc_id=TestData
+    # Start Video Recording    name=D:/TestCoffee496/Testdata/EditCoffeeInformaion  fps=None    size_percentage=1   embed=True  embed_width=100px   monitor=1
+    Open Excel Document    D:/TestCoffee496/Testdata/EditCoffeeInformaion.xlsx    doc_id=TestData
     ${excel}    Get Sheet    TestData
     FOR    ${i}    IN RANGE    2    ${excel.max_row+1}
         ${status}    Set Variable If    "${excel.cell(${i},2).value}" == "None"    ${EMPTY}    ${excel.cell(${i},2).value}
@@ -62,7 +62,7 @@ TC12
         END
     END
     Close All Browsers
-    Save Excel Document    C:/Users/Admin/Desktop/ResultsData/TC12_EditCoffeeinformaion.xlsx
+    Save Excel Document    D:/TestCoffee496/ResultsData/TC12_EditCoffeeinformaion.xlsx
     # Stop Video Recording
 
 *** Keywords ***

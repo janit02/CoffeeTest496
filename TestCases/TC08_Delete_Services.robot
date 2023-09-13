@@ -7,8 +7,8 @@ Library        ScreenCapLibrary
 *** Test Cases ***
 TC08
     Begin Webpage
-    # Start Video Recording    C:/Users/Admin/Desktop/Testdata/DeleteServices  fps=None    size_percentage=1   embed=True  embed_width=100px   monitor=1
-    Open Excel Document    C:/Users/Admin/Desktop/Testdata/DeleteServices.xlsx    doc_id=TestData
+    # Start Video Recording    D:/TestCoffee496/Testdata/DeleteServices  fps=None    size_percentage=1   embed=True  embed_width=100px   monitor=1
+    Open Excel Document    D:/TestCoffee496/Testdata/DeleteServices.xlsx    doc_id=TestData
     ${excel}    Get Sheet    TestData
     FOR    ${i}    IN RANGE    2    ${excel.max_row+1}
         ${status}    Set Variable If    "${excel.cell(${i},2).value}" == "None"    ${EMPTY}    ${excel.cell(${i},2).value}
@@ -43,7 +43,7 @@ TC08
         END
     END
     Close All Browsers
-    Save Excel Document    C:/Users/Admin/Desktop/TC08_DeleteServices.xlsx
+    Save Excel Document    D:/TestCoffee496/ResultsData/TC08_DeleteServices.xlsx
     # Stop Video Recording
 
 *** Keywords ***
