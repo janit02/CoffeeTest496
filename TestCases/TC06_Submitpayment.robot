@@ -31,7 +31,8 @@ TC06
             ${mobank}        Set Variable If    "${excel.cell(${i},4).value}" == "None"    ${EMPTY}    ${excel.cell(${i},4).value}
             ${money}         Set Variable If    "${excel.cell(${i},5).value}" == "None"    ${EMPTY}    ${excel.cell(${i},5).value}
             ${date}          Set Variable If    "${excel.cell(${i},6).value}" == "None"    ${EMPTY}    ${excel.cell(${i},6).value}
-            ${EXP}           Set Variable       ${excel.cell(${i},6).value}
+            ${time}          Set Variable If    "${excel.cell(${i},7).value}" == "None"    ${EMPTY}    ${excel.cell(${i},7).value}
+            ${EXP}           Set Variable       ${excel.cell(${i},8).value}
             
             Begin Webpage
             Click Element    //a[contains(text(),'Login')]
@@ -44,7 +45,8 @@ TC06
             Click Element    (//div[@class='input-group-prepend']//select)[${accout}]
             Click Element    (//div[@class='input-group-prepend']//select)[${mobank}] 
             Input Text    //input[@id='transferamount']    ${money}
-            
+            Input Text    //input[@id='stockDate']    ${date} 
+            Input Text    //input[@id='timetransfer']    ${time} 
             # Click Element    (//input[@style="text-align: center"])[2]
             # Click Element    //input[@id='timetransfer']    
             
@@ -55,7 +57,7 @@ TC06
             # Sleep    3s
             # Select day    ${date}    
 
-            Input Text    //input[@id='stockDate']    ${date} 
+           
 
             # Sleep    3s
            
