@@ -6,7 +6,6 @@ Library        ScreenCapLibrary
 
 *** Test Cases ***
 TC07
-    Begin Webpage
     #อัดวีดีโอ ค่อยเปิดตอนจะอัดจริงๆ
     # Start Video Recording    name=D:/TestCoffee496/Testdata/TC07_EditServicesRate  fps=None    size_percentage=1   embed=True  embed_width=100px   monitor=1
     Open Excel Document    D:/TestCoffee496/Testdata/TC07_EditServicesRate.xlsx    doc_id=TestData
@@ -21,15 +20,14 @@ TC07
             ${serviceCost}    Set Variable If    "${excel.cell(${i},5).value}" == "None"    ${EMPTY}    ${excel.cell(${i},5).value}
             ${EXP}         Set Variable       ${excel.cell(${i},6).value}
  
-            # ${Error}       Set Variable if    '${Status}' == 'FAIL'    No Error    Error    
-            # ${Suggestion}       Set Variable if    '${Error}' == 'Error' or '${Status}' == 'FAIL'       ควรมีการแจ้งเตือนให้ผู้ใช้งาน "${eclin.cell(${i},6).value}"     -
-            Begin Webpage
-            Click Element    //a[contains(text(),'Login')]
-            Input Text    //input[@id='username']    Emp03
-            Input Text    //input[@id='password']    123456
-            Sleep    5s
-            Click Button    //button[contains(text(),'Login')]
-            Click Element    //a[contains(text(),'รายการบริการ')]
+                Begin Webpage
+                Begin Webpage
+                Click Element    //a[contains(text(),'Login')]
+                Input Text    //input[@id='username']    Emp03
+                Input Text    //input[@id='password']    123456
+                Sleep    5s
+                Click Button    //button[contains(text(),'Login')]
+                Click Element    //a[contains(text(),'รายการบริการ')]
             # คลิกรายการที่จะแก้ไข
             
                 Click Element    (//a[@class="btn btn-info"])[${button}]
@@ -43,15 +41,15 @@ TC07
                 IF    "${ACTUAL_RESULT}" == "${EXP}"
                     Write Excel Cell    ${i}    7    value= ${ACTUAL_RESULT}    sheet_name=TestData
                     Write Excel Cell    ${i}    8    value=PASS    sheet_name=TestData
-                    Write Excel Cell    ${i}    9    value=No Error    sheet_name=TestData
-                    Write Excel Cell    ${i}    10   value= -    sheet_name=TestData
+                    Write Excel Cell    ${i}    10    value=No Error    sheet_name=TestData
+                    Write Excel Cell    ${i}    11   value= -    sheet_name=TestData
 
                 ELSE
                     Take Screenshot    name=C:/Users/Admin/Desktop/PicErorr/TC07_Edit_ServicesRate${tdid}_Fail.png
                     Write Excel Cell    ${i}    7    value= ${ACTUAL_RESULT}    sheet_name=TestData
                     Write Excel Cell    ${i}    8    value=FAIL    sheet_name=TestData
-                    Write Excel Cell    ${i}    9    value=Error   sheet_name=TestData
-                    Write Excel Cell    ${i}    10   value=ควรแจ้งเตือนผู้ใช้ว่า"${EXP}"    sheet_name=TestData
+                    Write Excel Cell    ${i}    10    value=Error   sheet_name=TestData
+                    Write Excel Cell    ${i}    11   value=ควรแจ้งเตือนผู้ใช้ว่า"${EXP}"    sheet_name=TestData
                 END
           Sleep    5s
             Close All Browsers

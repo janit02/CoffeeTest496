@@ -5,16 +5,16 @@ Library        Collections
 Library        ScreenCapLibrary
 Library        SelectDay.py
 
-*** Variables ***
-${CLICK_DATE}         xpath=(//android.widget.ImageView)[3]
-${HEADER_YEAR}        id=android:id/date_picker_header_year
-${HEADER_DATE}        id=android:id/date_picker_header_date
-${OK_YEAR_BTN}        id=android:id/button1
-${YEAR_LIST}          xpath=//android.widget.ListView/android.widget.TextView
-${MONTH_AND_YEAR}     xpath=(//android.view.View/android.view.View)[1]
-${PREV_BTN}           id=android:id/prev
-${NEXT_BTN}           id=android:id/next
-${DAY_LIST}           xpath=//android.view.View/android.view.View
+# *** Variables ***
+# ${CLICK_DATE}         xpath=(//android.widget.ImageView)[3]
+# ${HEADER_YEAR}        id=android:id/date_picker_header_year
+# ${HEADER_DATE}        id=android:id/date_picker_header_date
+# ${OK_YEAR_BTN}        id=android:id/button1
+# ${YEAR_LIST}          xpath=//android.widget.ListView/android.widget.TextView
+# ${MONTH_AND_YEAR}     xpath=(//android.view.View/android.view.View)[1]
+# ${PREV_BTN}           id=android:id/prev
+# ${NEXT_BTN}           id=android:id/next
+# ${DAY_LIST}           xpath=//android.view.View/android.view.View
 
 *** Test Cases ***
 TC06
@@ -32,7 +32,8 @@ TC06
             ${money}         Set Variable If    "${excel.cell(${i},5).value}" == "None"    ${EMPTY}    ${excel.cell(${i},5).value}
             ${date}          Set Variable If    "${excel.cell(${i},6).value}" == "None"    ${EMPTY}    ${excel.cell(${i},6).value}
             ${time}          Set Variable If    "${excel.cell(${i},7).value}" == "None"    ${EMPTY}    ${excel.cell(${i},7).value}
-            ${EXP}           Set Variable       ${excel.cell(${i},8).value}
+            ${recipe}        Set Variable If    "${excel.cell(${i},8).value}" == "None"    ${EMPTY}    ${excel.cell(${i},8).value}
+            ${EXP}           Set Variable       ${excel.cell(${i},9).value}
             
             Begin Webpage
             Click Element    //a[contains(text(),'Login')]
@@ -47,6 +48,7 @@ TC06
             Input Text    //input[@id='transferamount']    ${money}
             Input Text    //input[@id='stockDate']    ${date} 
             Input Text    //input[@id='timetransfer']    ${time} 
+            Click Element    //input[@name='photo']    ${recipe}
             # Click Element    (//input[@style="text-align: center"])[2]
             # Click Element    //input[@id='timetransfer']    
             
@@ -83,67 +85,67 @@ Begin Webpage
     Open Browser            http://localhost:8081/CoffeeProject/openHome      chrome    executable_path=D:/chromedriver.exe
     Maximize Browser Window
 
-Select day
-    [Arguments]    ${date_come_in}
-    Wait Until Element Is Visible    ${HEADER_YEAR}    10s
-    ${CURR_YEAR}    Get Text    ${HEADER_YEAR}
-    ${CURR_DATE}    Get Text    ${HEADER_DATE}
-    Click Element    ${HEADER_YEAR}
-    ${DATE_TARGET_ARRAY}=    Split Str By Slash    ${date_come_in}
-    ${TARGET_DAY}=    Set Variable    ${DATE_TARGET_ARRAY}[0]
-    ${TARGET_MONTH}=    Set Variable    ${DATE_TARGET_ARRAY}[1]
-    ${TARGET_YEAR}=    Set Variable    ${DATE_TARGET_ARRAY}[2]
+# Select day
+#     [Arguments]    ${date_come_in}
+#     Wait Until Element Is Visible    ${HEADER_YEAR}    10s
+#     ${CURR_YEAR}    Get Text    ${HEADER_YEAR}
+#     ${CURR_DATE}    Get Text    ${HEADER_DATE}
+#     Click Element    ${HEADER_YEAR}
+#     ${DATE_TARGET_ARRAY}=    Split Str By Slash    ${date_come_in}
+#     ${TARGET_DAY}=    Set Variable    ${DATE_TARGET_ARRAY}[0]
+#     ${TARGET_MONTH}=    Set Variable    ${DATE_TARGET_ARRAY}[1]
+#     ${TARGET_YEAR}=    Set Variable    ${DATE_TARGET_ARRAY}[2]
 
-    FOR    ${j}  IN RANGE    100
-                ${elements}    Get Webelements    ${YEAR_LIST}
-                ${flag}    Set Variable    20
-                ${str}    Set Variable    20
-                FOR    ${elem}    IN    @{elements}
-                    ${str}=    Get Text    ${elem}
-                    IF    ${str} == ${TARGET_YEAR}
-                        Click Element    ${elem}
-                        ${flag}    Set Variable    ${str}
-                        Exit For Loop
-                    END
-                END
-                Exit For Loop If    ${str} == ${flag}
-                # ${FIRST_ELEM}=    Set Variable    ${elements}[0]
-                # ${TEXT_OF_FIRST}=    Get Text    ${FIRST_ELEM} 
-                # IF    ${TEXT_OF_FIRST} < ${TARGET_YEAR}
-                #     Swipe By Percent    50    65    50    35    1000
-                # ELSE IF    ${TEXT_OF_FIRST} > ${TARGET_YEAR}
-                #     Swipe By Percent    50    35    50    65    1000
-                # END
-            END
+#     FOR    ${j}  IN RANGE    100
+#                 ${elements}    Get Webelements    ${YEAR_LIST}
+#                 ${flag}    Set Variable    20
+#                 ${str}    Set Variable    20
+#                 FOR    ${elem}    IN    @{elements}
+#                     ${str}=    Get Text    ${elem}
+#                     IF    ${str} == ${TARGET_YEAR}
+#                         Click Element    ${elem}
+#                         ${flag}    Set Variable    ${str}
+#                         Exit For Loop
+#                     END
+#                 END
+#                 Exit For Loop If    ${str} == ${flag}
+#                 # ${FIRST_ELEM}=    Set Variable    ${elements}[0]
+#                 # ${TEXT_OF_FIRST}=    Get Text    ${FIRST_ELEM} 
+#                 # IF    ${TEXT_OF_FIRST} < ${TARGET_YEAR}
+#                 #     Swipe By Percent    50    65    50    35    1000
+#                 # ELSE IF    ${TEXT_OF_FIRST} > ${TARGET_YEAR}
+#                 #     Swipe By Percent    50    35    50    65    1000
+#                 # END
+#             END
 
-            FOR  ${i}  IN RANGE    100
-                ${content_desc}=    Get Element Attribute    ${MONTH_AND_YEAR}    content-desc
-                ${res_content_desc}=    Split Month And Date    ${content_desc}
-                ${date}=    Set Variable    ${res_content_desc}[0]
-                ${month}=    Set Variable    ${res_content_desc}[1]
-                ${num_month}=    Convert Month To Number    ${month}
-                ${INT_TARGET_MONTH}=    Str To Int    ${TARGET_MONTH}
-                IF    ${num_month} > ${INT_TARGET_MONTH}
-                    Click Element    ${PREV_BTN}
-                ELSE IF    ${num_month} < ${INT_TARGET_MONTH}
-                    Click Element    ${NEXT_BTN}
-                ELSE
-                    ${days}    Get Webelements    ${DAY_LIST}
-                    FOR    ${day}    IN    @{days}
-                        ${day_content_desc}=    Get Element Attribute    ${day}    content-desc
-                        ${day_content_desc_arr}=    Split Str By Space    ${day_content_desc}
-                        ${real_day}=    Set Variable    ${day_content_desc_arr}[0]
-                        ${num_day}=    Str To Int    ${real_day}
-                        ${TARGET_DAY_INT}=    Str To Int    ${TARGET_DAY}
-                        IF    ${num_day} == ${TARGET_DAY_INT}
-                            Click Element    ${day}
-                            Exit For Loop
-                        END
-                    END
-                    Exit For Loop
-                END
-            END
+#             FOR  ${i}  IN RANGE    100
+#                 ${content_desc}=    Get Element Attribute    ${MONTH_AND_YEAR}    content-desc
+#                 ${res_content_desc}=    Split Month And Date    ${content_desc}
+#                 ${date}=    Set Variable    ${res_content_desc}[0]
+#                 ${month}=    Set Variable    ${res_content_desc}[1]
+#                 ${num_month}=    Convert Month To Number    ${month}
+#                 ${INT_TARGET_MONTH}=    Str To Int    ${TARGET_MONTH}
+#                 IF    ${num_month} > ${INT_TARGET_MONTH}
+#                     Click Element    ${PREV_BTN}
+#                 ELSE IF    ${num_month} < ${INT_TARGET_MONTH}
+#                     Click Element    ${NEXT_BTN}
+#                 ELSE
+#                     ${days}    Get Webelements    ${DAY_LIST}
+#                     FOR    ${day}    IN    @{days}
+#                         ${day_content_desc}=    Get Element Attribute    ${day}    content-desc
+#                         ${day_content_desc_arr}=    Split Str By Space    ${day_content_desc}
+#                         ${real_day}=    Set Variable    ${day_content_desc_arr}[0]
+#                         ${num_day}=    Str To Int    ${real_day}
+#                         ${TARGET_DAY_INT}=    Str To Int    ${TARGET_DAY}
+#                         IF    ${num_day} == ${TARGET_DAY_INT}
+#                             Click Element    ${day}
+#                             Exit For Loop
+#                         END
+#                     END
+#                     Exit For Loop
+#                 END
+#             END
 
-            Wait Until Element Is Visible    ${OK_YEAR_BTN}    10s
-            Click Element    ${OK_YEAR_BTN}
+#             Wait Until Element Is Visible    ${OK_YEAR_BTN}    10s
+#             Click Element    ${OK_YEAR_BTN}
             Sleep    1s
