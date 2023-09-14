@@ -48,7 +48,7 @@ TC06
             Input Text    //input[@id='transferamount']    ${money}
             Input Text    //input[@id='stockDate']    ${date} 
             Input Text    //input[@id='timetransfer']    ${time} 
-            Click Element    //input[@name='photo']    ${recipe}
+            # Click Element    //input[@name='photo']    ${recipe}
             # Click Element    (//input[@style="text-align: center"])[2]
             # Click Element    //input[@id='timetransfer']    
             

@@ -6,58 +6,50 @@ Library        ScreenCapLibrary
 
 *** Test Cases ***
 TC13
-    Begin Webpage
     # Start Video Recording    name=D:/TestCoffee496/Testdata/TC13_DeleteCoffeeInformation  fps=None    size_percentage=1   embed=True  embed_width=100px   monitor=1
-    Open Excel Document    D:/TestCoffee496/Testdata/TestdataTC13_DeleteCoffeeInformation.xlsx    doc_id=TestData
+    Open Excel Document    D:/TestCoffee496/Testdata/TC13_DeleteCoffeeInformation.xlsx    doc_id=TestData
     ${excel}    Get Sheet    TestData
     FOR    ${i}    IN RANGE    2    ${excel.max_row+1}
         ${status}    Set Variable If    "${excel.cell(${i},2).value}" == "None"    ${EMPTY}    ${excel.cell(${i},2).value}
         IF    "${status}" == "Y"
-            ${tdid}        Set Variable If    "${excel.cell(${i},1).value}" == "None"    ${EMPTY}    ${excel.cell(${i},1).value}    
+            ${tdid}            Set Variable If    "${excel.cell(${i},1).value}" == "None"    ${EMPTY}    ${excel.cell(${i},1).value}    
             Log To Console   ${tdid}
-            ${Delete}        Set Variable If    "${excel.cell(${i},3).value}" == "None"    ${EMPTY}    ${excel.cell(${i},3).value}
-            # ${Error}       Set Variable if    '${get_message}' == '${text_not_alert}'      Not Found Alert         No Error
-            # ${Suggestion}       Set Variable if    '${Error}' == 'Not Found Alert'      ควรมีการแจ้งเตือนให้ผู้ใช้งาน "${eclin.cell(${i},3).value}" 
-            ${EXP}         Set Variable       ${excel.cell(${i},4).value}
-            
-            # Delete
-            # (//td/a[@class="btn btn-danger"])[1]
-            # (//td/a[@class="btn btn-danger"])[2]
-            # (//td/a[@class="btn btn-danger"])[3]
-
+            ${DeleteCoffee}    Set Variable If    "${excel.cell(${i},3).value}" == "None"    ${EMPTY}    ${excel.cell(${i},3).value}
+            ${EXP}             Set Variable       ${excel.cell(${i},4).value}
+        
+            Begin Webpage
             Click Element    //a[contains(text(),'Login')]
             Input Text    //input[@id='username']    Emp03
             Input Text    //input[@id='password']    123456
-            Sleep    5s  
+            Sleep    3s  
             Click Button    //button[contains(text(),'Login')]  
             Click Element    //a[contains(text(),'รายการกาแฟ')]
-            Click Element    (//td/a[@class="btn btn-danger"])    ${Delete}
+            Sleep    3s 
+            # Delete start Button 2
+            Click Element    (//a[@class="btn btn-danger"])[${DeleteCoffee}]   
             
-            # IF     ${i} == 2
-            #      Remove News Page
-            #  ELSE
-            #     Cancel News
-            #  END
+            ${ACTUAL_RESULT}    Get Text    //h2[contains(text(),'รายการกาแฟ')]  #เช็คerorr
 
-            # Click Button    //a[contains(text(),'Delete')] !!!!!
+                IF    "${ACTUAL_RESULT}" == "${EXP}"
+                    Write Excel Cell    ${i}    5    value= ${ACTUAL_RESULT}    sheet_name=TestData
+                    Write Excel Cell    ${i}    6    value=PASS    sheet_name=TestData
+                    Write Excel Cell    ${i}    8    value=No Error    sheet_name=TestData
+                    Write Excel Cell    ${i}    9   value= -    sheet_name=TestData
 
-            # เหลือดึงค่าลิงค์หน้ามาเช็ค
-            
-            # ${ACTUAL_RESULT}    Get Text    //h2[contains(text(),'Roaster Information')]  #เช็คerorr
+                ELSE
+                    Take Screenshot    name=C:/Users/Admin/Desktop/PicErorr/TC07_Edit_ServicesRate${tdid}_Fail.png
+                    Write Excel Cell    ${i}    5    value= ${ACTUAL_RESULT}    sheet_name=TestData
+                    Write Excel Cell    ${i}    6    value=FAIL    sheet_name=TestData
+                    Write Excel Cell    ${i}    8    value=Error   sheet_name=TestData
+                    Write Excel Cell    ${i}    9   value=ควรแจ้งเตือนผู้ใช้ว่า"${EXP}"    sheet_name=TestData
+                END
 
-            # IF    "${ACTUAL_RESULT}" == "${EXP}"
-            #     Write Excel Cell    ${i}    11    value=PASS    sheet_name=TestData
-            # ELSE
-            #     Take Screenshot    C:/Users/Admin/Desktop/${tdid}_Fail.png
-            #     Write Excel Cell    ${i}    11    value=FAIL    sheet_name=TestData
-            #     Write Excel Cell    ${i}    12    value=${ACTUAL_RESULT}    sheet_name=TestData
-            # END
 
             Sleep    5s
         END
     END
     Close All Browsers
-    Save Excel Document    D:/TestCoffee496/ResultsData/TD13_DeleteCoffeeInformation.xlsx
+    Save Excel Document    D:/TestCoffee496/ResultsData/TD13_DeleteCoffee_Result.xlsx
     # Stop Video Recording
 
 *** Keywords ***
