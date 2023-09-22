@@ -48,36 +48,32 @@ TC06
             Input Text    //input[@id='transferamount']    ${money}
             Input Text    //input[@id='stockDate']    ${date} 
             Input Text    //input[@id='timetransfer']    ${time} 
-            # Click Element    //input[@name='photo']    ${recipe}
-            # Click Element    (//input[@style="text-align: center"])[2]
-            # Click Element    //input[@id='timetransfer']    
+            Choose File    (//input[@type="file"])     ${recipe}
+            Sleep    5s
+            Click Button    //button[contains(text(),'ยืนยันการแจ้งโอนเงิน')]
             
-            
-            # ${x}    Set Variable    942
-            # ${y}    Set Variable    444
-            # Press Keys        ${x}    ${y}
-            # Sleep    3s
-            # Select day    ${date}    
+            ${ACTUAL_RESULT}    Get Text    //body//h1       #เช็คerorr   #ยังไม่เสร็จ
 
-           
 
-            # Sleep    3s
-           
-            # ${ACTUAL_RESULT}    Get Text    //h2[contains(text(),'Roaster Information')]  #เช็คerorr
+            IF    "${ACTUAL_RESULT}" == "${EXP}"
+                Write Excel Cell    ${i}    10    value= ${ACTUAL_RESULT}    sheet_name=TestData
+                Write Excel Cell    ${i}    11    value=PASS    sheet_name=TestData
+                Write Excel Cell    ${i}    13    value=No Error    sheet_name=TestData
+                Write Excel Cell    ${i}    14    value= -    sheet_name=TestData
 
-            # IF    "${ACTUAL_RESULT}" == "${EXP}"
-            #     Write Excel Cell    ${i}    11    value=PASS    sheet_name=TestData
-            # ELSE
-            #     Take Screenshot    C:/Users/Admin/Desktop/${tdid}_Fail.png
-            #     Write Excel Cell    ${i}    11    value=FAIL    sheet_name=TestData
-            #     Write Excel Cell    ${i}    12    value=${ACTUAL_RESULT}    sheet_name=TestData
-            # END
+            ELSE
+                Take Screenshot    name=D:/TestCoffee496/PicErorr/TC02_Register${tdid}_Fail.png
+                Write Excel Cell    ${i}    10    value=${ACTUAL_RESULT}    sheet_name=TestData
+                Write Excel Cell    ${i}    11    value=FAIL    sheet_name=TestData
+                Write Excel Cell    ${i}    13    value=Error   sheet_name=TestData
+                Write Excel Cell    ${i}    14    value=ควรแจ้งเตือนผู้ใช้ว่า"${EXP}"    sheet_name=TestData
+            END
 
             Sleep    5s
         END
     END
     Close All Browsers
-    Save Excel Document    D:/TestCoffee496/ResultsData/TD06_Payment_Result.xlsx
+    Save Excel Document    D:/TestCoffee496/ResultsData/TD06_Payment_Result1.xlsx
     # Stop Video Recording
 
 *** Keywords ***
@@ -148,4 +144,4 @@ Begin Webpage
 
 #             Wait Until Element Is Visible    ${OK_YEAR_BTN}    10s
 #             Click Element    ${OK_YEAR_BTN}
-            Sleep    1s
+           
