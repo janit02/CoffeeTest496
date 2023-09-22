@@ -15,17 +15,20 @@ TC11
         IF    "${status}" == "Y"
             ${tdid}        Set Variable If    "${excel.cell(${i},1).value}" == "None"    ${EMPTY}    ${excel.cell(${i},1).value}    
             Log To Console   ${tdid}
-            # ${selectcoffee}    Set Variable If    "${excel.cell(${i},3).value}" == "None"    ${EMPTY}    ${excel.cell(${i},3).value}
             ${mashed}    Set Variable If    "${excel.cell(${i},3).value}" == "None"    ${EMPTY}    ${excel.cell(${i},3).value}
-            ${weight}    Set Variable If    "${excel.cell(${i},5).value}" == "None"    ${EMPTY}    ${excel.cell(${i},5).value} 
-            ${EXP}    Set Variable       ${excel.cell(${i},6).value}
+            # ${crush}     Set Variable If    "${excel.cell(${i},4).value}" == "None"    ${EMPTY}    ${excel.cell(${i},4).value}
+            ${crushCoffee}  Set Variable If    "${excel.cell(${i},5).value}" == "None"    ${EMPTY}    ${excel.cell(${i},5).value}
+            ${crushCoffee}  Set Variable If    "${excel.cell(${i},5).value}" == "None"    ${EMPTY}    ${excel.cell(${i},5).value}
+            ${packsip}      Set Variable If    "${excel.cell(${i},6).value}" == "None"    ${EMPTY}    ${excel.cell(${i},6).value}
+            ${weight}    Set Variable If    "${excel.cell(${i},7).value}" == "None"    ${EMPTY}    ${excel.cell(${i},7).value} 
+            ${EXP}    Set Variable       ${excel.cell(${i},8).value}
             
             Begin Webpage
             Click Element    //a[contains(text(),'Login')]
-            Input Text    //input[@id='username']    User001
-            Input Text    //input[@id='password']    123456
+            Input Text       //input[@id='username']    User001
+            Input Text       //input[@id='password']    123456
             Sleep    5s
-            Click Button    //button[contains(text(),'Login')]
+            Click Button     //button[contains(text(),'Login')]
 
             Click Element    //a[@id='navbardrop']
             Click Element    //a[contains(text(),'กาแฟของทางโรงคั่ว')]
@@ -34,63 +37,29 @@ TC11
             Sleep    5s
             # บดเมล็ดกาแฟ
             Click Element   (//option[@value='${mashed}'])    
-            # Checkbox Should Be Selected    //input[@id='serviceid']   
+            # Click Element   //input[@id='serviceid'][${crush}]   
+            Sleep    3s
+            # บริการบดกาแฟ have radio option2,3
+            Click Element    //input[@type='radio' and @id='${crushCoffee}']
+            # บริการแพ็คถุง have radio option4,5,6,7,8
+            Click Element    //input[@type='radio' and @id='${packsip}']
+            Input Text    //input[@id='coffeeweight']    ${weight}
             Sleep    5s
-            
-        # Wait Until Page Contains Element  ${sn_color}   10s
-        #      Click Element    ${sn_color}
-        #     IF    '${color}' == 'ดำ' 
-        #         Wait Until Page Contains Element    ${sn_clr}    10s
-        #             Click Element    ${sn_clr}
-        #         Sleep    1s
-        #     ELSE IF  '${color}' == 'แดง' 
-        #         Wait Until Page Contains Element    ${sn_clb}   10s
-        #             Click Element    ${sn_clb}
-        #         Sleep    1s
-        #     END
-                   
-            # ${selectcoffee}=     Select Checkbox    (//option[@value="[${i}]"])
-  
-            # Click Element    ${selectcoffee}  
 
-            # # Click Element    //select[@id='coffeeid']    ${selectcoffee}  ติดตรงเลือกSelectCoffee
-            # # Sleep    5s
-
-            # # [บดเมล็ดหรือไม่บด]
-            # Click Button    //input[@id='serviceid']
-            # Click Element    //input[@id='option2']
-            
-            # # [เลือกบริการแพ็คถุงหรือไม่แพ็คถุง]ยังไม่ถูก
-            # Click Element   //input[@id='option4']
-            # # Click Element   //input[@id='option5']
-            # # Click Element   //input[@id='option6']
-            # # Click Element   //input[@id='option7']
-            # # Click Element   //input[@id='option8']
-            
-            # # input weight coffee
-            # Input Text    //input[@id='coffeeweight']    ${weight}
-            
-            
-            # คำนวนค่าใช้จ่ายถูกไหม?
-            # Get Text    //input[@id='payment']    
-
-            # เหลือดึงค่าลิงค์หน้ามาเช็ค!!!!
-
-            # กรอกถูกแล้วแต่ไม่ Pass ให้ !!!!!
             ${ACTUAL_RESULT}    Get Value    //input[@id='payment']  #เช็คerorr
 
             IF    "${ACTUAL_RESULT}" == "${EXP}"
-                Write Excel Cell    ${i}    7    value= ${ACTUAL_RESULT}    sheet_name=TestData
-                Write Excel Cell    ${i}    8   value=PASS    sheet_name=TestData
-                Write Excel Cell    ${i}    9    value=No Error    sheet_name=TestData
-                Write Excel Cell    ${i}    10    value= -    sheet_name=TestData
+                Write Excel Cell    ${i}    9    value= ${ACTUAL_RESULT}    sheet_name=TestData
+                Write Excel Cell    ${i}    10   value=PASS    sheet_name=TestData
+                Write Excel Cell    ${i}    12   value=No Error    sheet_name=TestData
+                Write Excel Cell    ${i}    13   value= -   sheet_name=TestData
 
             ELSE
                 Take Screenshot    name=C:/Users/Admin/Desktop/PicErorr/TC11_Login${tdid}_Fail.png
-                Write Excel Cell    ${i}    7    value=${ACTUAL_RESULT}    sheet_name=TestData
-                Write Excel Cell    ${i}    8    value=FAIL    sheet_name=TestData
-                Write Excel Cell    ${i}    9    value=Error   sheet_name=TestData
-                Write Excel Cell    ${i}    10    value=ควรแจ้งเตือนผู้ใช้ว่า"${EXP}"    sheet_name=TestData
+                Write Excel Cell    ${i}    9    value=${ACTUAL_RESULT}    sheet_name=TestData
+                Write Excel Cell    ${i}    10   value=FAIL    sheet_name=TestData
+                Write Excel Cell    ${i}    12   value=Error   sheet_name=TestData
+                Write Excel Cell    ${i}    13   value=ค่าใช้จ่ายในการแปรรูปที่ถูกต้องคือ"${EXP}"บาท  sheet_name=TestData
             END
             Sleep    5s
             Close All Browsers
@@ -99,7 +68,7 @@ TC11
         END
     END
     
-    Save Excel Document    D:/TestCoffee496/ResultsData/TD11_CreateOrderbyCoffeeRoaster.xlsx
+    Save Excel Document    D:/TestCoffee496/ResultsData/TD11_CreateOrderbyCoffeeRoaster_Result1.xlsx
     # Stop Video Recording
 
 *** Keywords ***
